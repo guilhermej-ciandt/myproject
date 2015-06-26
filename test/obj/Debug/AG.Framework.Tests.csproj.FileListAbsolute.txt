@@ -47,7 +47,6 @@ C:\projects\myproject\test\build\VS.Net.2008\AG.Framework.Tests\Debug\Iesi.Colle
 C:\projects\myproject\build\VS.Net.2008\AG.Framework.Tests\Debug\AG.Framework.Tests.dll.config
 C:\projects\myproject\build\VS.Net.2008\AG.Framework.Tests\Debug\AG.Framework.Tests.dll
 C:\projects\myproject\build\VS.Net.2008\AG.Framework.Tests\Debug\AG.Framework.Tests.pdb
-C:\projects\myproject\test\obj\Debug\AG.Framework.Tests.csproj.App.config
 C:\projects\myproject\test\obj\Debug\AG.Framework.Tests.csprojResolveAssemblyReference.cache
 C:\projects\myproject\test\obj\Debug\AG.Framework.Tests.dll
 C:\projects\myproject\test\obj\Debug\AG.Framework.Tests.pdb

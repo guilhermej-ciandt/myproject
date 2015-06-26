@@ -16,7 +16,7 @@
 
     <target name="test">
 	<property name="dll2test" value="AG.Framework.Tests"/>
-	<property name="namespace2test" value="AG.Framework.Test"/>
+	<property name="namespace2test" value="AG.Framework.Domain"/>
 	<call target="nunit-test-command-line"/>
     </target>
 
@@ -24,11 +24,12 @@
     <target name="nunit-test-command-line">
 	<property name="dll2testPath" value="${build.dir}/VS.Net.2008/${dll2test}/${build.configuration}/${dll2test}.dll"/>
         <exec 
-			basedir="${basedir}\${tools.dir}\nunit-3\bin"
+			basedir="${basedir}\${tools.dir}\nunit-2\bin"
 			program="nunit-console.exe" workingdir="${path::get-directory-name(dll2testPath)}" verbose="true">
-          <arg value="--test:${namespace2test}"/>
+          <arg value="/fixture:${namespace2test}"/>
           <arg path="${dll2testPath}"/>
-          <arg value="--out:${dll2test}-TestResults.xml"/>
+          <arg value="/xml:${basedir}\${dll2test}-TestResults.xml"/>
+          <arg value="/nologo"/>
           
         </exec>
     </target>
