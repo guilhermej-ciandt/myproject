@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project name="AG.Bsc" default="test">
+
+    <!-- global project settings -->
+	<property name="basedir" value="."/>
+    <property name="project.name" value="AG.Bsc"/>
+    <property name="build.dir" value="build"/>
+    <property name="tools.dir" value="build-support\tools"/>
+    <property name="build.configuration" value="Debug"/>
+    <property name="currentframework" value="${framework::get-version(framework::get-runtime-framework())}"/>
+
+    <property name="build.number" if="${environment::variable-exists('BUILD_NUMBER') and not property::exists('ignore.build.number')}" value="${environment::get-variable('BUILD_NUMBER')}"/>
+    <property name="build.number" if="${not environment::variable-exists('BUILD_NUMBER') or property::exists('ignore.build.number')}" value="rc"/>
+
+   
+
+    <target name="test">
+	<property name="dll2test" value="AG.Framework.Tests"/>
+	<property name="namespace2test" value="AG.Framework.Test"/>
+	<call target="nunit-test-command-line"/>
+    </target>
+
+
+    <target name="nunit-test-command-line">
+	<property name="dll2testPath" value="${build.dir}/VS.Net.2008/${dll2test}/${build.configuration}/${dll2test}.dll"/>
+        <exec 
+			basedir="${basedir}\${tools.dir}\nunit-3\bin"
+			program="nunit-console.exe" workingdir="${path::get-directory-name(dll2testPath)}" verbose="true">
+          <arg value="--test:${namespace2test}"/>
+          <arg path="${dll2testPath}"/>
+          <arg value="--out:${dll2test}-TestResults.xml"/>
+          
+        </exec>
+    </target>
+
+</project>

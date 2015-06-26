@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="AG.Bsc" default="build" basedir=".">
+ <property name="basedir" value="."/>
+ <property name="source" value="src"/>
+ <property name="dist" value="dist"/>
+ <property name="rest" value="${source}/REST"/>
+
+    <!-- global project settings -->
+    <property name="project.name" value="AG.Bsc"/>
+    <property name="project.build.config" value="Debug"/>
+    <property name="project.build.package" value="false"/>
+    <property name="project.build.sign" value="false"/>
+    <property name="build.dir" value="build"/>
+    <property name="tools.dir" value="build-support/tools"/>
+    <property name="build.configuration" value="Debug"/>
+
+<target name="executeMsbuild">
+ <property name="msbuild-prog" value="C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"/>
+
+ <exec program="${msbuild-prog}" failonerror="true">
+   
+   <arg file="./myproject.sln"/>
+ </exec>
+
+</target>
+
+ <target name="clean"
+         description="Clean up and create artifact directories">
+  <delete dir="${basedir}/build/api"/>
+  <delete dir="${basedir}/build/code-browser"/>
+  <delete dir="${basedir}/build/coverage"/>
+  <delete dir="${basedir}/build/logs"/>
+  <delete dir="${basedir}/build/pdepend"/>
+  <delete dir="${basedir}/${dist}"/>
+
+  <mkdir dir="${basedir}/build/api"/>
+  <mkdir dir="${basedir}/build/code-browser"/>
+  <mkdir dir="${basedir}/build/coverage"/>
+  <mkdir dir="${basedir}/build/logs"/>
+  <mkdir dir="${basedir}/build/pdepend"/>
+  <mkdir dir="${basedir}/${dist}"/>
+
+ </target>
+
+  <target name="phpunit"
+         description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
+  <exec executable="phpunit" failonerror="true"/>
+ </target>
+ 
+     <target name="dist.BSC.web">
+      <property name="webapp.name" value="Bsc.Web"/>
+      <call target="dist.webapp"/>
+    </target>
+	
+	<target name="dist.framework">
+        <mkdir dir="dist" if="${not directory::exists('dist')}"/>
+        <delete>
+            <fileset>
+                <include name="dist/framework.zip"/>
+            </fileset>
+        </delete>
+        <mkdir dir="dist"/>
+        <zip zipfile="dist/framework.zip">
+            <fileset basedir="build/VS.Net.2008/Ag.Framework/${build.configuration}">
+              <include name="*.*"/>
+            </fileset>
+            <fileset basedir="src/AG.Framework">
+              <include name="**/*.cs"/>
+            </fileset>
+        </zip>
+    </target>
+
+  <target name="dist.webapp">
+    <mkdir dir="dist" if="${not directory::exists('dist')}"/>
+    <delete>
+      <fileset>
+        <include name="dist/${webapp.name}.zip"/>
+      </fileset>
+    </delete>
+    <zip zipfile="dist/${webapp.name}.zip" duplicate="Preserve">
+      <fileset basedir="src/AG.${webapp.name}">
+          <exclude name="**/.svn"/>
+          <exclude name="**/Logs/**"/>
+          <include name="**/*"/>
+      </fileset>
+      <fileset basedir="build\VS.Net.2008\AG.${webapp.name}.References\${build.configuration}" prefix="Bin">
+        <exclude name="**/.svn"/>
+        <include name="**/*"/>
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="dist"
+         description="Creates the zip containing de deployable">
+   <delete dir="${basedir}/${dist}"/>
+   <mkdir dir="${basedir}/${dist}"/>
+   <zip zipfile="${dist}/carousl-backend.zip">
+	   <fileset
+		   basedir="${source}">
+		   <include name="**/*.*"/>
+		   <exclude name="**/todo.html"/>
+	   </fileset>
+   </zip>
+ </target>
+
+ <target name="build" depends="clean,executeMsbuild,dist, dist.framework"/>
+</project>
